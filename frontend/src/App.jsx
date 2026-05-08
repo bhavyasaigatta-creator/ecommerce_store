@@ -17,6 +17,10 @@ function App() {
   const [showProfile, setShowProfile] =
     useState(false);
 
+  // BASE URL
+  const BASE_URL =
+    "https://ecommerce-store-r6uf.onrender.com";
+
   // LOAD CART
   useEffect(() => {
     const savedCart =
@@ -42,7 +46,7 @@ function App() {
 
   const fetchProducts = async () => {
     const res = await fetch(
-      "http://localhost:5000/products"
+      `${BASE_URL}/products`
     );
 
     const data = await res.json();
@@ -53,7 +57,7 @@ function App() {
   // SIGNUP
   const handleSignup = async () => {
     const res = await fetch(
-      "http://localhost:5000/auth/signup",
+      `${BASE_URL}/auth/signup`,
       {
         method: "POST",
         headers: {
@@ -78,7 +82,7 @@ function App() {
   // LOGIN
   const handleLogin = async () => {
     const res = await fetch(
-      "http://localhost:5000/auth/login",
+      `${BASE_URL}/auth/login`,
       {
         method: "POST",
         headers: {
@@ -179,7 +183,7 @@ function App() {
   // CHECKOUT
   const handleCheckout = async () => {
     const res = await fetch(
-      "http://localhost:5000/orders",
+      `${BASE_URL}/orders`,
       {
         method: "POST",
         headers: {
@@ -314,7 +318,6 @@ function App() {
     );
   }
 
-  // MAIN WEBSITE
   return (
     <div
       style={{
@@ -322,8 +325,6 @@ function App() {
         minHeight: "100vh"
       }}
     >
-      {/* ADMIN BAR */}
-
       {role === "admin" && (
         <div
           style={{
@@ -337,18 +338,13 @@ function App() {
         </div>
       )}
 
-      {/* NAVBAR */}
-
       <div
         style={{
           backgroundColor: "#111827",
           padding: "18px 35px",
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
-          position: "sticky",
-          top: "0",
-          zIndex: "1000"
+          alignItems: "center"
         }}
       >
         <h1
@@ -388,8 +384,6 @@ function App() {
           >
             👤
           </button>
-
-          {/* PROFILE */}
 
           {showProfile && (
             <div
@@ -438,343 +432,6 @@ function App() {
                 Logout
               </button>
             </div>
-          )}
-        </div>
-      </div>
-
-      {/* PRODUCTS */}
-
-      <div style={{ padding: "35px" }}>
-        <h1
-          style={{
-            textAlign: "center",
-            marginBottom: "35px",
-            fontSize: "48px"
-          }}
-        >
-          Explore Products ✨
-        </h1>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit, minmax(270px, 1fr))",
-            gap: "25px"
-          }}
-        >
-          {products.map((product) => {
-            const cartItem = cart.find(
-              (item) => item._id === product._id
-            );
-
-            return (
-              <div
-                key={product._id}
-                style={{
-                  backgroundColor: "white",
-                  borderRadius: "18px",
-                  overflow: "hidden",
-                  boxShadow:
-                    "0 5px 20px rgba(0,0,0,0.08)"
-                }}
-              >
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  style={{
-                    width: "100%",
-                    height: "220px",
-                    objectFit: "cover"
-                  }}
-                />
-
-                <div
-                  style={{
-                    padding: "20px",
-                    textAlign: "center"
-                  }}
-                >
-                  <h2>{product.title}</h2>
-
-                  <h2 style={{ color: "green" }}>
-                    ₹ {product.price}
-                  </h2>
-
-                  <p>{product.description}</p>
-
-                  {!cartItem ? (
-                    <button
-                      onClick={() =>
-                        addToCart(product)
-                      }
-                      style={{
-                        width: "100%",
-                        padding: "12px",
-                        backgroundColor: "#111827",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "10px",
-                        cursor: "pointer"
-                      }}
-                    >
-                      Add To Cart
-                    </button>
-                  ) : (
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent:
-                          "center",
-                        alignItems: "center",
-                        gap: "18px",
-                        marginTop: "15px"
-                      }}
-                    >
-                      <button
-                        onClick={() =>
-                          decreaseQuantity(
-                            product._id
-                          )
-                        }
-                        style={{
-                          padding: "8px 14px",
-                          border: "none",
-                          borderRadius: "8px",
-                          cursor: "pointer"
-                        }}
-                      >
-                        ➖
-                      </button>
-
-                      <span
-                        style={{
-                          fontWeight: "bold",
-                          fontSize: "18px"
-                        }}
-                      >
-                        {cartItem.quantity}
-                      </span>
-
-                      <button
-                        onClick={() =>
-                          increaseQuantity(
-                            product._id
-                          )
-                        }
-                        style={{
-                          padding: "8px 14px",
-                          border: "none",
-                          borderRadius: "8px",
-                          cursor: "pointer",
-                          backgroundColor:
-                            "#111827",
-                          color: "white"
-                        }}
-                      >
-                        ➕
-                      </button>
-                    </div>
-                  )}
-
-                  {/* ADMIN CONTROLS */}
-
-                  {role === "admin" && (
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent:
-                          "center",
-                        gap: "10px",
-                        marginTop: "18px"
-                      }}
-                    >
-                      <button
-                        style={{
-                          backgroundColor:
-                            "#2563eb",
-                          color: "white",
-                          border: "none",
-                          padding:
-                            "10px 15px",
-                          borderRadius:
-                            "8px",
-                          cursor: "pointer"
-                        }}
-                      >
-                        Update
-                      </button>
-
-                      <button
-                        style={{
-                          backgroundColor:
-                            "#dc2626",
-                          color: "white",
-                          border: "none",
-                          padding:
-                            "10px 15px",
-                          borderRadius:
-                            "8px",
-                          cursor: "pointer"
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* CART */}
-
-        <div style={{ marginTop: "70px" }}>
-          <h1
-            style={{
-              textAlign: "center",
-              marginBottom: "30px",
-              fontSize: "42px"
-            }}
-          >
-            🛒 Your Cart
-          </h1>
-
-          {cart.length === 0 ? (
-            <div
-              style={{
-                backgroundColor: "white",
-                padding: "40px",
-                borderRadius: "15px",
-                textAlign: "center"
-              }}
-            >
-              Your cart is empty 😔
-            </div>
-          ) : (
-            <>
-              <div
-                style={{
-                  backgroundColor: "white",
-                  borderRadius: "20px",
-                  overflow: "hidden"
-                }}
-              >
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                      "2fr 1fr 1fr 1fr",
-                    backgroundColor: "#111827",
-                    color: "white",
-                    padding: "18px",
-                    fontWeight: "bold"
-                  }}
-                >
-                  <div>Product</div>
-                  <div>Price</div>
-                  <div>Quantity</div>
-                  <div>Action</div>
-                </div>
-
-                {cart.map((item) => (
-                  <div
-                    key={item._id}
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns:
-                        "2fr 1fr 1fr 1fr",
-                      padding: "22px",
-                      alignItems: "center",
-                      borderBottom:
-                        "1px solid #eee"
-                    }}
-                  >
-                    <div>{item.title}</div>
-
-                    <div
-                      style={{
-                        color: "green",
-                        fontWeight: "bold"
-                      }}
-                    >
-                      ₹ {item.price}
-                    </div>
-
-                    <div>
-                      {item.quantity}
-                    </div>
-
-                    <button
-                      onClick={() =>
-                        removeFromCart(item._id)
-                      }
-                      style={{
-                        backgroundColor:
-                          "#ef4444",
-                        color: "white",
-                        border: "none",
-                        padding:
-                          "10px 15px",
-                        borderRadius:
-                          "10px",
-                        cursor: "pointer",
-                        width: "100px"
-                      }}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ))}
-              </div>
-
-              {/* TOTAL */}
-
-              <div
-                style={{
-                  marginTop: "30px",
-                  backgroundColor: "white",
-                  padding: "30px",
-                  borderRadius: "20px",
-                  display: "flex",
-                  justifyContent:
-                    "space-between",
-                  alignItems: "center"
-                }}
-              >
-                <h1>Total Amount</h1>
-
-                <h1 style={{ color: "green" }}>
-                  ₹ {totalPrice}
-                </h1>
-              </div>
-
-              {/* CHECKOUT */}
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "25px"
-                }}
-              >
-                <button
-                  onClick={handleCheckout}
-                  style={{
-                    backgroundColor: "green",
-                    color: "white",
-                    border: "none",
-                    padding: "15px 30px",
-                    borderRadius: "12px",
-                    fontSize: "18px",
-                    cursor: "pointer"
-                  }}
-                >
-                  Proceed To Checkout
-                </button>
-              </div>
-            </>
           )}
         </div>
       </div>
