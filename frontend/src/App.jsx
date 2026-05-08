@@ -17,7 +17,7 @@ function App() {
   const [showProfile, setShowProfile] =
     useState(false);
 
-  // BASE URL
+  // RENDER BACKEND URL
   const BASE_URL =
     "https://ecommerce-store-r6uf.onrender.com";
 
@@ -45,13 +45,17 @@ function App() {
   }, []);
 
   const fetchProducts = async () => {
-    const res = await fetch(
-      `${BASE_URL}/products`
-    );
+    try {
+      const res = await fetch(
+        `${BASE_URL}/products`
+      );
 
-    const data = await res.json();
+      const data = await res.json();
 
-    setProducts(data);
+      setProducts(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // SIGNUP
@@ -61,7 +65,8 @@ function App() {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type":
+            "application/json"
         },
         body: JSON.stringify({
           username,
@@ -74,7 +79,10 @@ function App() {
 
     alert(data.message);
 
-    if (data.message === "Signup successful") {
+    if (
+      data.message ===
+      "Signup successful"
+    ) {
       setIsLogin(true);
     }
   };
@@ -86,7 +94,8 @@ function App() {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type":
+            "application/json"
         },
         body: JSON.stringify({
           username,
@@ -99,7 +108,10 @@ function App() {
 
     alert(data.message);
 
-    if (data.message === "Login successful") {
+    if (
+      data.message ===
+      "Login successful"
+    ) {
       setIsLoggedIn(true);
 
       setRole(data.role);
@@ -116,17 +128,20 @@ function App() {
   // ADD TO CART
   const addToCart = (product) => {
     const existingProduct = cart.find(
-      (item) => item._id === product._id
+      (item) =>
+        item._id === product._id
     );
 
     if (existingProduct) {
-      const updatedCart = cart.map((item) =>
-        item._id === product._id
-          ? {
-              ...item,
-              quantity: item.quantity + 1
-            }
-          : item
+      const updatedCart = cart.map(
+        (item) =>
+          item._id === product._id
+            ? {
+                ...item,
+                quantity:
+                  item.quantity + 1
+              }
+            : item
       );
 
       setCart(updatedCart);
@@ -143,13 +158,15 @@ function App() {
 
   // INCREASE
   const increaseQuantity = (id) => {
-    const updatedCart = cart.map((item) =>
-      item._id === id
-        ? {
-            ...item,
-            quantity: item.quantity + 1
-          }
-        : item
+    const updatedCart = cart.map(
+      (item) =>
+        item._id === id
+          ? {
+              ...item,
+              quantity:
+                item.quantity + 1
+            }
+          : item
     );
 
     setCart(updatedCart);
@@ -162,11 +179,14 @@ function App() {
         item._id === id
           ? {
               ...item,
-              quantity: item.quantity - 1
+              quantity:
+                item.quantity - 1
             }
           : item
       )
-      .filter((item) => item.quantity > 0);
+      .filter(
+        (item) => item.quantity > 0
+      );
 
     setCart(updatedCart);
   };
@@ -187,7 +207,8 @@ function App() {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type":
+            "application/json"
         },
         body: JSON.stringify({
           username,
@@ -207,7 +228,8 @@ function App() {
   // TOTAL
   const totalPrice = cart.reduce(
     (total, item) =>
-      total + item.price * item.quantity,
+      total +
+      item.price * item.quantity,
     0
   );
 
@@ -217,7 +239,8 @@ function App() {
       <div
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent:
+            "center",
           alignItems: "center",
           minHeight: "100vh",
           background:
@@ -252,14 +275,17 @@ function App() {
             placeholder="Username"
             value={username}
             onChange={(e) =>
-              setUsername(e.target.value)
+              setUsername(
+                e.target.value
+              )
             }
             style={{
               width: "100%",
               padding: "14px",
               marginBottom: "15px",
               borderRadius: "10px",
-              border: "1px solid #ccc"
+              border:
+                "1px solid #ccc"
             }}
           />
 
@@ -268,14 +294,17 @@ function App() {
             placeholder="Password"
             value={password}
             onChange={(e) =>
-              setPassword(e.target.value)
+              setPassword(
+                e.target.value
+              )
             }
             style={{
               width: "100%",
               padding: "14px",
               marginBottom: "20px",
               borderRadius: "10px",
-              border: "1px solid #ccc"
+              border:
+                "1px solid #ccc"
             }}
           />
 
@@ -288,7 +317,8 @@ function App() {
             style={{
               width: "100%",
               padding: "14px",
-              backgroundColor: "#111827",
+              backgroundColor:
+                "#111827",
               color: "white",
               border: "none",
               borderRadius: "10px",
@@ -296,7 +326,9 @@ function App() {
               cursor: "pointer"
             }}
           >
-            {isLogin ? "Login" : "Signup"}
+            {isLogin
+              ? "Login"
+              : "Signup"}
           </button>
 
           <p
@@ -318,6 +350,7 @@ function App() {
     );
   }
 
+  // MAIN WEBSITE
   return (
     <div
       style={{
@@ -325,10 +358,13 @@ function App() {
         minHeight: "100vh"
       }}
     >
+      {/* ADMIN BAR */}
+
       {role === "admin" && (
         <div
           style={{
-            backgroundColor: "#facc15",
+            backgroundColor:
+              "#facc15",
             padding: "12px",
             textAlign: "center",
             fontWeight: "bold"
@@ -338,12 +374,15 @@ function App() {
         </div>
       )}
 
+      {/* NAVBAR */}
+
       <div
         style={{
           backgroundColor: "#111827",
           padding: "18px 35px",
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent:
+            "space-between",
           alignItems: "center"
         }}
       >
@@ -365,16 +404,23 @@ function App() {
             position: "relative"
           }}
         >
-          <span>🛒 {cart.length}</span>
+          <span>
+            🛒 {cart.length}
+          </span>
 
-          <span>₹ {totalPrice}</span>
+          <span>
+            ₹ {totalPrice}
+          </span>
 
           <button
             onClick={() =>
-              setShowProfile(!showProfile)
+              setShowProfile(
+                !showProfile
+              )
             }
             style={{
-              backgroundColor: "white",
+              backgroundColor:
+                "white",
               width: "45px",
               height: "45px",
               borderRadius: "50%",
@@ -385,6 +431,8 @@ function App() {
             👤
           </button>
 
+          {/* PROFILE */}
+
           {showProfile && (
             <div
               style={{
@@ -392,39 +440,52 @@ function App() {
                 top: "65px",
                 right: "0",
                 width: "250px",
-                backgroundColor: "white",
+                backgroundColor:
+                  "white",
                 borderRadius: "15px",
                 padding: "20px",
                 boxShadow:
                   "0 5px 20px rgba(0,0,0,0.2)"
               }}
             >
-              <h2>👋 Welcome</h2>
+              <h2>
+                👋 Welcome
+              </h2>
 
               <p>
-                <strong>Username:</strong>{" "}
+                <strong>
+                  Username:
+                </strong>{" "}
                 {username}
               </p>
 
               <p>
-                <strong>Role:</strong>{" "}
+                <strong>
+                  Role:
+                </strong>{" "}
                 {role}
               </p>
 
               <p>
-                <strong>Cart Items:</strong>{" "}
+                <strong>
+                  Cart Items:
+                </strong>{" "}
                 {cart.length}
               </p>
 
               <button
-                onClick={handleLogout}
+                onClick={
+                  handleLogout
+                }
                 style={{
                   width: "100%",
                   padding: "12px",
-                  backgroundColor: "#111827",
+                  backgroundColor:
+                    "#111827",
                   color: "white",
                   border: "none",
-                  borderRadius: "10px",
+                  borderRadius:
+                    "10px",
                   marginTop: "10px",
                   cursor: "pointer"
                 }}
@@ -432,6 +493,444 @@ function App() {
                 Logout
               </button>
             </div>
+          )}
+        </div>
+      </div>
+
+      {/* PRODUCTS */}
+
+      <div
+        style={{
+          padding: "35px"
+        }}
+      >
+        <h1
+          style={{
+            textAlign: "center",
+            marginBottom: "35px",
+            fontSize: "48px"
+          }}
+        >
+          Explore Products ✨
+        </h1>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              "repeat(auto-fit, minmax(270px, 1fr))",
+            gap: "25px"
+          }}
+        >
+          {products.map(
+            (product) => {
+              const cartItem =
+                cart.find(
+                  (item) =>
+                    item._id ===
+                    product._id
+                );
+
+              return (
+                <div
+                  key={
+                    product._id
+                  }
+                  style={{
+                    backgroundColor:
+                      "white",
+                    borderRadius:
+                      "18px",
+                    overflow:
+                      "hidden",
+                    boxShadow:
+                      "0 5px 20px rgba(0,0,0,0.08)"
+                  }}
+                >
+                  <img
+                    src={
+                      product.image
+                    }
+                    alt={
+                      product.title
+                    }
+                    style={{
+                      width: "100%",
+                      height:
+                        "220px",
+                      objectFit:
+                        "cover"
+                    }}
+                  />
+
+                  <div
+                    style={{
+                      padding:
+                        "20px",
+                      textAlign:
+                        "center"
+                    }}
+                  >
+                    <h2>
+                      {
+                        product.title
+                      }
+                    </h2>
+
+                    <h2
+                      style={{
+                        color:
+                          "green"
+                      }}
+                    >
+                      ₹{" "}
+                      {
+                        product.price
+                      }
+                    </h2>
+
+                    <p>
+                      {
+                        product.description
+                      }
+                    </p>
+
+                    {!cartItem ? (
+                      <button
+                        onClick={() =>
+                          addToCart(
+                            product
+                          )
+                        }
+                        style={{
+                          width:
+                            "100%",
+                          padding:
+                            "12px",
+                          backgroundColor:
+                            "#111827",
+                          color:
+                            "white",
+                          border:
+                            "none",
+                          borderRadius:
+                            "10px",
+                          cursor:
+                            "pointer"
+                        }}
+                      >
+                        Add To Cart
+                      </button>
+                    ) : (
+                      <div
+                        style={{
+                          display:
+                            "flex",
+                          justifyContent:
+                            "center",
+                          alignItems:
+                            "center",
+                          gap: "18px",
+                          marginTop:
+                            "15px"
+                        }}
+                      >
+                        <button
+                          onClick={() =>
+                            decreaseQuantity(
+                              product._id
+                            )
+                          }
+                        >
+                          ➖
+                        </button>
+
+                        <span>
+                          {
+                            cartItem.quantity
+                          }
+                        </span>
+
+                        <button
+                          onClick={() =>
+                            increaseQuantity(
+                              product._id
+                            )
+                          }
+                        >
+                          ➕
+                        </button>
+                      </div>
+                    )}
+
+                    {/* ADMIN */}
+
+                    {role ===
+                      "admin" && (
+                      <div
+                        style={{
+                          display:
+                            "flex",
+                          justifyContent:
+                            "center",
+                          gap: "10px",
+                          marginTop:
+                            "15px"
+                        }}
+                      >
+                        <button
+                          style={{
+                            backgroundColor:
+                              "#2563eb",
+                            color:
+                              "white",
+                            border:
+                              "none",
+                            padding:
+                              "10px 15px",
+                            borderRadius:
+                              "8px"
+                          }}
+                        >
+                          Update
+                        </button>
+
+                        <button
+                          style={{
+                            backgroundColor:
+                              "#dc2626",
+                            color:
+                              "white",
+                            border:
+                              "none",
+                            padding:
+                              "10px 15px",
+                            borderRadius:
+                              "8px"
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            }
+          )}
+        </div>
+
+        {/* CART */}
+
+        <div
+          style={{
+            marginTop: "70px"
+          }}
+        >
+          <h1
+            style={{
+              textAlign: "center",
+              marginBottom: "30px",
+              fontSize: "42px"
+            }}
+          >
+            🛒 Your Cart
+          </h1>
+
+          {cart.length === 0 ? (
+            <div
+              style={{
+                backgroundColor:
+                  "white",
+                padding: "40px",
+                borderRadius:
+                  "15px",
+                textAlign:
+                  "center"
+              }}
+            >
+              Your cart is empty 😔
+            </div>
+          ) : (
+            <>
+              <div
+                style={{
+                  backgroundColor:
+                    "white",
+                  borderRadius:
+                    "20px",
+                  overflow:
+                    "hidden"
+                }}
+              >
+                <div
+                  style={{
+                    display:
+                      "grid",
+                    gridTemplateColumns:
+                      "2fr 1fr 1fr 1fr",
+                    backgroundColor:
+                      "#111827",
+                    color:
+                      "white",
+                    padding: "18px",
+                    fontWeight:
+                      "bold"
+                  }}
+                >
+                  <div>
+                    Product
+                  </div>
+                  <div>
+                    Price
+                  </div>
+                  <div>
+                    Quantity
+                  </div>
+                  <div>
+                    Action
+                  </div>
+                </div>
+
+                {cart.map((item) => (
+                  <div
+                    key={
+                      item._id
+                    }
+                    style={{
+                      display:
+                        "grid",
+                      gridTemplateColumns:
+                        "2fr 1fr 1fr 1fr",
+                      padding:
+                        "22px",
+                      alignItems:
+                        "center",
+                      borderBottom:
+                        "1px solid #eee"
+                    }}
+                  >
+                    <div>
+                      {
+                        item.title
+                      }
+                    </div>
+
+                    <div
+                      style={{
+                        color:
+                          "green",
+                        fontWeight:
+                          "bold"
+                      }}
+                    >
+                      ₹{" "}
+                      {
+                        item.price
+                      }
+                    </div>
+
+                    <div>
+                      {
+                        item.quantity
+                      }
+                    </div>
+
+                    <button
+                      onClick={() =>
+                        removeFromCart(
+                          item._id
+                        )
+                      }
+                      style={{
+                        backgroundColor:
+                          "#ef4444",
+                        color:
+                          "white",
+                        border:
+                          "none",
+                        padding:
+                          "10px 15px",
+                        borderRadius:
+                          "10px",
+                        cursor:
+                          "pointer",
+                        width:
+                          "100px"
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* TOTAL */}
+
+              <div
+                style={{
+                  marginTop: "30px",
+                  backgroundColor:
+                    "white",
+                  padding: "30px",
+                  borderRadius:
+                    "20px",
+                  display: "flex",
+                  justifyContent:
+                    "space-between",
+                  alignItems:
+                    "center"
+                }}
+              >
+                <h1>
+                  Total Amount
+                </h1>
+
+                <h1
+                  style={{
+                    color:
+                      "green"
+                  }}
+                >
+                  ₹ {totalPrice}
+                </h1>
+              </div>
+
+              {/* CHECKOUT */}
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent:
+                    "center",
+                  marginTop: "25px"
+                }}
+              >
+                <button
+                  onClick={
+                    handleCheckout
+                  }
+                  style={{
+                    backgroundColor:
+                      "green",
+                    color:
+                      "white",
+                    border:
+                      "none",
+                    padding:
+                      "15px 30px",
+                    borderRadius:
+                      "12px",
+                    fontSize:
+                      "18px",
+                    cursor:
+                      "pointer"
+                  }}
+                >
+                  Proceed To Checkout
+                </button>
+              </div>
+            </>
           )}
         </div>
       </div>
